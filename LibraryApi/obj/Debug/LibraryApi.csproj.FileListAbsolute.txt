@@ -1,0 +1,12 @@
+F:\ProjectWinForm\LibraryApi\LibraryApi\bin\Debug\LibraryApi.dll.config
+F:\ProjectWinForm\LibraryApi\LibraryApi\bin\Debug\LibraryApi.dll
+F:\ProjectWinForm\LibraryApi\LibraryApi\bin\Debug\LibraryApi.pdb
+F:\ProjectWinForm\LibraryApi\LibraryApi\obj\Debug\LibraryApi.csprojAssemblyReference.cache
+F:\ProjectWinForm\LibraryApi\LibraryApi\obj\Debug\LibraryApi.csproj.CoreCompileInputs.cache
+F:\ProjectWinForm\LibraryApi\LibraryApi\obj\Debug\LibraryApi.dll
+F:\ProjectWinForm\LibraryApi\LibraryApi\obj\Debug\LibraryApi.pdb
+F:\ProjectWinForm\LibraryApi\LibraryApi\bin\Debug\EntityFramework.dll
+F:\ProjectWinForm\LibraryApi\LibraryApi\bin\Debug\EntityFramework.SqlServer.dll
+F:\ProjectWinForm\LibraryApi\LibraryApi\bin\Debug\EntityFramework.xml
+F:\ProjectWinForm\LibraryApi\LibraryApi\bin\Debug\EntityFramework.SqlServer.xml
+F:\ProjectWinForm\LibraryApi\LibraryApi\obj\Debug\LibraryApi.csproj.CopyComplete

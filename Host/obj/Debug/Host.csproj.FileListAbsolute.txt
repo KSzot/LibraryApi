@@ -1,0 +1,13 @@
+F:\ProjectWinForm\LibraryApi\Host\bin\Debug\Host.exe.config
+F:\ProjectWinForm\LibraryApi\Host\bin\Debug\Host.exe
+F:\ProjectWinForm\LibraryApi\Host\bin\Debug\Host.pdb
+F:\ProjectWinForm\LibraryApi\Host\bin\Debug\LibraryApi.dll
+F:\ProjectWinForm\LibraryApi\Host\bin\Debug\EntityFramework.dll
+F:\ProjectWinForm\LibraryApi\Host\bin\Debug\LibraryApi.pdb
+F:\ProjectWinForm\LibraryApi\Host\bin\Debug\LibraryApi.dll.config
+F:\ProjectWinForm\LibraryApi\Host\bin\Debug\EntityFramework.xml
+F:\ProjectWinForm\LibraryApi\Host\obj\Debug\Host.csprojAssemblyReference.cache
+F:\ProjectWinForm\LibraryApi\Host\obj\Debug\Host.csproj.CoreCompileInputs.cache
+F:\ProjectWinForm\LibraryApi\Host\obj\Debug\Host.csproj.CopyComplete
+F:\ProjectWinForm\LibraryApi\Host\obj\Debug\Host.exe
+F:\ProjectWinForm\LibraryApi\Host\obj\Debug\Host.pdb

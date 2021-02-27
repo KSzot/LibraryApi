@@ -28,6 +28,8 @@ namespace LibraryApi
         [OperationContract]
         IEnumerable<Klienci> GetAllClient();
 
+        [OperationContract]
+        IEnumerable<Ksiazka> GetAllBooks();
         // TODO: Add your service operations here
     }
 

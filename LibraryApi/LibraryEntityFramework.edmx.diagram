@@ -6,6 +6,12 @@
     <edmx:Diagrams>
       <Diagram DiagramId="6fbdcdb7659f4d0ebbd0df56e867e472" Name="Diagram1">
         <EntityTypeShape EntityType="libraryModel.Klienci" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="libraryModel.Autor" Width="1.5" PointX="7.875" PointY="2.375" />
+        <EntityTypeShape EntityType="libraryModel.Ksiazka" Width="1.5" PointX="2.5" PointY="4.5" />
+        <EntityTypeShape EntityType="libraryModel.KsiazkaAutor" Width="1.5" PointX="5.375" PointY="3.25" />
+        <EntityTypeShape EntityType="libraryModel.sysdiagram" Width="1.5" PointX="5.75" PointY="0.75" />
+        <AssociationConnector Association="libraryModel.FK_KsiazkaAutor_Autor" />
+        <AssociationConnector Association="libraryModel.FK_Ksiazka_KsiazkaAutor" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

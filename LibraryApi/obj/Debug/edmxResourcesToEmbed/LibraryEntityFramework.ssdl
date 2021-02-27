@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="libraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Autor">
+    <Key>
+      <PropertyRef Name="IDAutor" />
+    </Key>
+    <Property Name="IDAutor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Imie" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="Nazwisko" Type="varchar" MaxLength="30" Nullable="false" />
+  </EntityType>
   <EntityType Name="Klienci">
     <Key>
       <PropertyRef Name="IDKlienta" />
@@ -8,11 +16,71 @@
     <Property Name="Nazwisko" Type="char" MaxLength="30" Nullable="false" />
     <Property Name="Imie" Type="char" MaxLength="15" Nullable="false" />
     <Property Name="Wiek" Type="int" />
-    <Property Name="Adres" Type="char" MaxLength="30" />
+    <Property Name="Email" Type="char" MaxLength="30" />
     <Property Name="Telefon" Type="char" MaxLength="15" />
     <Property Name="Plec" Type="char" MaxLength="1" Nullable="false" />
   </EntityType>
+  <EntityType Name="Ksiazka">
+    <Key>
+      <PropertyRef Name="IDKsiazki" />
+    </Key>
+    <Property Name="IDKsiazki" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Tytul" Type="varchar" MaxLength="40" />
+  </EntityType>
+  <EntityType Name="KsiazkaAutor">
+    <Key>
+      <PropertyRef Name="IDKsiazka" />
+    </Key>
+    <Property Name="IDKsiazka" Type="int" Nullable="false" />
+    <Property Name="IDAutor" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_Ksiazka_KsiazkaAutor">
+    <End Role="KsiazkaAutor" Type="Self.KsiazkaAutor" Multiplicity="1" />
+    <End Role="Ksiazka" Type="Self.Ksiazka" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="KsiazkaAutor">
+        <PropertyRef Name="IDKsiazka" />
+      </Principal>
+      <Dependent Role="Ksiazka">
+        <PropertyRef Name="IDKsiazki" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_KsiazkaAutor_Autor">
+    <End Role="Autor" Type="Self.Autor" Multiplicity="1" />
+    <End Role="KsiazkaAutor" Type="Self.KsiazkaAutor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Autor">
+        <PropertyRef Name="IDAutor" />
+      </Principal>
+      <Dependent Role="KsiazkaAutor">
+        <PropertyRef Name="IDAutor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="libraryModelStoreContainer">
+    <EntitySet Name="Autor" EntityType="Self.Autor" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Klienci" EntityType="Self.Klienci" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Ksiazka" EntityType="Self.Ksiazka" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KsiazkaAutor" EntityType="Self.KsiazkaAutor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Ksiazka_KsiazkaAutor" Association="Self.FK_Ksiazka_KsiazkaAutor">
+      <End Role="KsiazkaAutor" EntitySet="KsiazkaAutor" />
+      <End Role="Ksiazka" EntitySet="Ksiazka" />
+    </AssociationSet>
+    <AssociationSet Name="FK_KsiazkaAutor_Autor" Association="Self.FK_KsiazkaAutor_Autor">
+      <End Role="Autor" EntitySet="Autor" />
+      <End Role="KsiazkaAutor" EntitySet="KsiazkaAutor" />
+    </AssociationSet>
   </EntityContainer>
 </Schema>

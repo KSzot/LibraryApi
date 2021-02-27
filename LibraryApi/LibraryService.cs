@@ -10,6 +10,8 @@ namespace LibraryApi
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
     public class LibraryService : ILibraryService
     {
+        #region FunToModifyAddEditCustomers
+
         public string AddClientToDatabase(Klienci client)
         {
             var context = new libraryEntities();
@@ -28,7 +30,7 @@ namespace LibraryApi
             person.Nazwisko = client.Nazwisko;
             person.Plec = client.Plec;
             person.Wiek = client.Wiek;
-            person.Adres = client.Adres;
+            person.Email = client.Email;
             person.Telefon = client.Telefon;
             context.SaveChanges();
         }
@@ -57,6 +59,17 @@ namespace LibraryApi
             var context = new libraryEntities();
             return context.Kliencis;
         }
+
+        #endregion
+
+
+        #region FunToModifyAddEditBooks
+        public IEnumerable<Ksiazka> GetAllBooks()
+        {
+            var context = new libraryEntities();
+            return context.Ksiazkas;
+        }
+        #endregion
 
         public CompositeType GetDataUsingDataContract(CompositeType composite)
         {

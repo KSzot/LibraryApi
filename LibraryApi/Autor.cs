@@ -12,14 +12,19 @@ namespace LibraryApi
     using System;
     using System.Collections.Generic;
     
-    public partial class Klienci
+    public partial class Autor
     {
-        public int IDKlienta { get; set; }
-        public string Nazwisko { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Autor()
+        {
+            this.KsiazkaAutors = new HashSet<KsiazkaAutor>();
+        }
+    
+        public int IDAutor { get; set; }
         public string Imie { get; set; }
-        public Nullable<int> Wiek { get; set; }
-        public string Telefon { get; set; }
-        public string Plec { get; set; }
-        public string Email { get; set; }
+        public string Nazwisko { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<KsiazkaAutor> KsiazkaAutors { get; set; }
     }
 }

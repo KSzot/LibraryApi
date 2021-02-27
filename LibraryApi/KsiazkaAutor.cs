@@ -12,14 +12,12 @@ namespace LibraryApi
     using System;
     using System.Collections.Generic;
     
-    public partial class Klienci
+    public partial class KsiazkaAutor
     {
-        public int IDKlienta { get; set; }
-        public string Nazwisko { get; set; }
-        public string Imie { get; set; }
-        public Nullable<int> Wiek { get; set; }
-        public string Telefon { get; set; }
-        public string Plec { get; set; }
-        public string Email { get; set; }
+        public int IDKsiazka { get; set; }
+        public int IDAutor { get; set; }
+    
+        public virtual Autor Autor { get; set; }
+        public virtual Ksiazka Ksiazka { get; set; }
     }
 }

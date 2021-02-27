@@ -4,7 +4,15 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="libraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="libraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Autor">
+          <Key>
+            <PropertyRef Name="IDAutor" />
+          </Key>
+          <Property Name="IDAutor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Imie" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Nazwisko" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
         <EntityType Name="Klienci">
           <Key>
             <PropertyRef Name="IDKlienta" />
@@ -13,15 +21,74 @@
           <Property Name="Nazwisko" Type="char" MaxLength="30" Nullable="false" />
           <Property Name="Imie" Type="char" MaxLength="15" Nullable="false" />
           <Property Name="Wiek" Type="int" />
-          <Property Name="Adres" Type="char" MaxLength="30" />
+          <Property Name="Email" Type="char" MaxLength="30" />
           <Property Name="Telefon" Type="char" MaxLength="15" />
           <Property Name="Plec" Type="char" MaxLength="1" Nullable="false" />
         </EntityType>
+        <EntityType Name="Ksiazka">
+          <Key>
+            <PropertyRef Name="IDKsiazki" />
+          </Key>
+          <Property Name="IDKsiazki" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tytul" Type="varchar" MaxLength="40" />
+        </EntityType>
+        <EntityType Name="KsiazkaAutor">
+          <Key>
+            <PropertyRef Name="IDKsiazka" />
+          </Key>
+          <Property Name="IDKsiazka" Type="int" Nullable="false" />
+          <Property Name="IDAutor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Ksiazka_KsiazkaAutor">
+          <End Role="KsiazkaAutor" Type="Self.KsiazkaAutor" Multiplicity="1" />
+          <End Role="Ksiazka" Type="Self.Ksiazka" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="KsiazkaAutor">
+              <PropertyRef Name="IDKsiazka" />
+            </Principal>
+            <Dependent Role="Ksiazka">
+              <PropertyRef Name="IDKsiazki" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_KsiazkaAutor_Autor">
+          <End Role="Autor" Type="Self.Autor" Multiplicity="1" />
+          <End Role="KsiazkaAutor" Type="Self.KsiazkaAutor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autor">
+              <PropertyRef Name="IDAutor" />
+            </Principal>
+            <Dependent Role="KsiazkaAutor">
+              <PropertyRef Name="IDAutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="libraryModelStoreContainer">
+          <EntitySet Name="Autor" EntityType="Self.Autor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Klienci" EntityType="Self.Klienci" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ksiazka" EntityType="Self.Ksiazka" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KsiazkaAutor" EntityType="Self.KsiazkaAutor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Ksiazka_KsiazkaAutor" Association="Self.FK_Ksiazka_KsiazkaAutor">
+            <End Role="KsiazkaAutor" EntitySet="KsiazkaAutor" />
+            <End Role="Ksiazka" EntitySet="Ksiazka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_KsiazkaAutor_Autor" Association="Self.FK_KsiazkaAutor_Autor">
+            <End Role="Autor" EntitySet="Autor" />
+            <End Role="KsiazkaAutor" EntitySet="KsiazkaAutor" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="libraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -33,13 +100,85 @@
           <Property Name="Nazwisko" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="Imie" Type="String" MaxLength="15" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="Wiek" Type="Int32" />
-          <Property Name="Adres" Type="String" MaxLength="30" FixedLength="true" Unicode="false" />
           <Property Name="Telefon" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
           <Property Name="Plec" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="30" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityContainer Name="libraryEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Kliencis" EntityType="Self.Klienci" />
+          <EntitySet Name="Autors" EntityType="libraryModel.Autor" />
+          <EntitySet Name="Ksiazkas" EntityType="libraryModel.Ksiazka" />
+          <EntitySet Name="KsiazkaAutors" EntityType="libraryModel.KsiazkaAutor" />
+          <EntitySet Name="sysdiagrams" EntityType="libraryModel.sysdiagram" />
+          <AssociationSet Name="FK_KsiazkaAutor_Autor" Association="libraryModel.FK_KsiazkaAutor_Autor">
+            <End Role="Autor" EntitySet="Autors" />
+            <End Role="KsiazkaAutor" EntitySet="KsiazkaAutors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ksiazka_KsiazkaAutor" Association="libraryModel.FK_Ksiazka_KsiazkaAutor">
+            <End Role="KsiazkaAutor" EntitySet="KsiazkaAutors" />
+            <End Role="Ksiazka" EntitySet="Ksiazkas" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Autor">
+          <Key>
+            <PropertyRef Name="IDAutor" />
+          </Key>
+          <Property Name="IDAutor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Imie" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Nazwisko" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="KsiazkaAutors" Relationship="libraryModel.FK_KsiazkaAutor_Autor" FromRole="Autor" ToRole="KsiazkaAutor" />
+        </EntityType>
+        <EntityType Name="Ksiazka">
+          <Key>
+            <PropertyRef Name="IDKsiazki" />
+          </Key>
+          <Property Name="IDKsiazki" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tytul" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="KsiazkaAutor" Relationship="libraryModel.FK_Ksiazka_KsiazkaAutor" FromRole="Ksiazka" ToRole="KsiazkaAutor" />
+        </EntityType>
+        <EntityType Name="KsiazkaAutor">
+          <Key>
+            <PropertyRef Name="IDKsiazka" />
+          </Key>
+          <Property Name="IDKsiazka" Type="Int32" Nullable="false" />
+          <Property Name="IDAutor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Autor" Relationship="libraryModel.FK_KsiazkaAutor_Autor" FromRole="KsiazkaAutor" ToRole="Autor" />
+          <NavigationProperty Name="Ksiazka" Relationship="libraryModel.FK_Ksiazka_KsiazkaAutor" FromRole="KsiazkaAutor" ToRole="Ksiazka" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_KsiazkaAutor_Autor">
+          <End Type="libraryModel.Autor" Role="Autor" Multiplicity="1" />
+          <End Type="libraryModel.KsiazkaAutor" Role="KsiazkaAutor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autor">
+              <PropertyRef Name="IDAutor" />
+            </Principal>
+            <Dependent Role="KsiazkaAutor">
+              <PropertyRef Name="IDAutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ksiazka_KsiazkaAutor">
+          <End Type="libraryModel.KsiazkaAutor" Role="KsiazkaAutor" Multiplicity="1" />
+          <End Type="libraryModel.Ksiazka" Role="Ksiazka" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="KsiazkaAutor">
+              <PropertyRef Name="IDKsiazka" />
+            </Principal>
+            <Dependent Role="Ksiazka">
+              <PropertyRef Name="IDKsiazki" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -49,13 +188,49 @@
           <EntitySetMapping Name="Kliencis">
             <EntityTypeMapping TypeName="libraryModel.Klienci">
               <MappingFragment StoreEntitySet="Klienci">
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="IDKlienta" ColumnName="IDKlienta" />
                 <ScalarProperty Name="Nazwisko" ColumnName="Nazwisko" />
                 <ScalarProperty Name="Imie" ColumnName="Imie" />
                 <ScalarProperty Name="Wiek" ColumnName="Wiek" />
-                <ScalarProperty Name="Adres" ColumnName="Adres" />
                 <ScalarProperty Name="Telefon" ColumnName="Telefon" />
                 <ScalarProperty Name="Plec" ColumnName="Plec" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Autors">
+            <EntityTypeMapping TypeName="libraryModel.Autor">
+              <MappingFragment StoreEntitySet="Autor">
+                <ScalarProperty Name="Nazwisko" ColumnName="Nazwisko" />
+                <ScalarProperty Name="Imie" ColumnName="Imie" />
+                <ScalarProperty Name="IDAutor" ColumnName="IDAutor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ksiazkas">
+            <EntityTypeMapping TypeName="libraryModel.Ksiazka">
+              <MappingFragment StoreEntitySet="Ksiazka">
+                <ScalarProperty Name="Tytul" ColumnName="Tytul" />
+                <ScalarProperty Name="IDKsiazki" ColumnName="IDKsiazki" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KsiazkaAutors">
+            <EntityTypeMapping TypeName="libraryModel.KsiazkaAutor">
+              <MappingFragment StoreEntitySet="KsiazkaAutor">
+                <ScalarProperty Name="IDAutor" ColumnName="IDAutor" />
+                <ScalarProperty Name="IDKsiazka" ColumnName="IDKsiazka" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="libraryModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

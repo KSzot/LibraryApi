@@ -26,5 +26,9 @@ namespace LibraryApi
         }
     
         public virtual DbSet<Klienci> Kliencis { get; set; }
+        public virtual DbSet<Autor> Autors { get; set; }
+        public virtual DbSet<Ksiazka> Ksiazkas { get; set; }
+        public virtual DbSet<KsiazkaAutor> KsiazkaAutors { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

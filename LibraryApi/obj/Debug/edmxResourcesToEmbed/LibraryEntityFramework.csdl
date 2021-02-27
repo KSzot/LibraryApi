@@ -8,11 +8,83 @@
     <Property Name="Nazwisko" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
     <Property Name="Imie" Type="String" MaxLength="15" FixedLength="true" Unicode="false" Nullable="false" />
     <Property Name="Wiek" Type="Int32" />
-    <Property Name="Adres" Type="String" MaxLength="30" FixedLength="true" Unicode="false" />
     <Property Name="Telefon" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
     <Property Name="Plec" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="30" FixedLength="true" Unicode="false" />
   </EntityType>
   <EntityContainer Name="libraryEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Kliencis" EntityType="Self.Klienci" />
+    <EntitySet Name="Autors" EntityType="libraryModel.Autor" />
+    <EntitySet Name="Ksiazkas" EntityType="libraryModel.Ksiazka" />
+    <EntitySet Name="KsiazkaAutors" EntityType="libraryModel.KsiazkaAutor" />
+    <EntitySet Name="sysdiagrams" EntityType="libraryModel.sysdiagram" />
+    <AssociationSet Name="FK_KsiazkaAutor_Autor" Association="libraryModel.FK_KsiazkaAutor_Autor">
+      <End Role="Autor" EntitySet="Autors" />
+      <End Role="KsiazkaAutor" EntitySet="KsiazkaAutors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ksiazka_KsiazkaAutor" Association="libraryModel.FK_Ksiazka_KsiazkaAutor">
+      <End Role="KsiazkaAutor" EntitySet="KsiazkaAutors" />
+      <End Role="Ksiazka" EntitySet="Ksiazkas" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="Autor">
+    <Key>
+      <PropertyRef Name="IDAutor" />
+    </Key>
+    <Property Name="IDAutor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Imie" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="Nazwisko" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="KsiazkaAutors" Relationship="libraryModel.FK_KsiazkaAutor_Autor" FromRole="Autor" ToRole="KsiazkaAutor" />
+  </EntityType>
+  <EntityType Name="Ksiazka">
+    <Key>
+      <PropertyRef Name="IDKsiazki" />
+    </Key>
+    <Property Name="IDKsiazki" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Tytul" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="KsiazkaAutor" Relationship="libraryModel.FK_Ksiazka_KsiazkaAutor" FromRole="Ksiazka" ToRole="KsiazkaAutor" />
+  </EntityType>
+  <EntityType Name="KsiazkaAutor">
+    <Key>
+      <PropertyRef Name="IDKsiazka" />
+    </Key>
+    <Property Name="IDKsiazka" Type="Int32" Nullable="false" />
+    <Property Name="IDAutor" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Autor" Relationship="libraryModel.FK_KsiazkaAutor_Autor" FromRole="KsiazkaAutor" ToRole="Autor" />
+    <NavigationProperty Name="Ksiazka" Relationship="libraryModel.FK_Ksiazka_KsiazkaAutor" FromRole="KsiazkaAutor" ToRole="Ksiazka" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_KsiazkaAutor_Autor">
+    <End Type="libraryModel.Autor" Role="Autor" Multiplicity="1" />
+    <End Type="libraryModel.KsiazkaAutor" Role="KsiazkaAutor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Autor">
+        <PropertyRef Name="IDAutor" />
+      </Principal>
+      <Dependent Role="KsiazkaAutor">
+        <PropertyRef Name="IDAutor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ksiazka_KsiazkaAutor">
+    <End Type="libraryModel.KsiazkaAutor" Role="KsiazkaAutor" Multiplicity="1" />
+    <End Type="libraryModel.Ksiazka" Role="Ksiazka" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="KsiazkaAutor">
+        <PropertyRef Name="IDKsiazka" />
+      </Principal>
+      <Dependent Role="Ksiazka">
+        <PropertyRef Name="IDKsiazki" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>
